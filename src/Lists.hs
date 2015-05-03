@@ -158,3 +158,26 @@ decodeModified = concatMap decode
     where decode (Multiple n a) = (replicate n a)
           decode (Single a) = [a]
 
+
+-- | Problem 13
+--
+-- Run-length encoding of a list (direct solution).
+--
+-- Implement the so-called run-length encoding data compression method directly. 
+-- I.e. don't explicitly create the sublists containing the duplicates, as in problem 9, but only count 
+-- them. As in problem P11, simplify the result list by replacing the singleton lists (1 X) by X.
+--
+-- >>> encodeDirect "aaaabccaadeeee"
+-- [Multiple 4 'a',Single 'b',Multiple 2 'c',Multiple 2 'a',Single 'd',Multiple 4 'e']
+encodeDirect :: Eq a => [a] -> [Encoded a]
+encodeDirect = map foo . count
+    where foo (1, a) = Single a
+          foo (n, a) = Multiple n a
+
+count :: Eq a => [a] -> [(Int,a)]
+count = foldr helper []
+    where
+        helper x [] = [(1,x)]
+        helper x ((n,x'):rest)
+            | x == x'   = ((n+1),x'):rest
+            | otherwise = (1,x):(n,x'):rest
