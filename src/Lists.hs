@@ -1,7 +1,5 @@
 module Lists where
 
-import Data.List
-
 
 -- | Problem 1
 -- Find the last element of a list
@@ -99,6 +97,16 @@ data NestedList a = Elem a | List [NestedList a]
 -- >>> compress "aaaabccaadeeee"
 -- "abcade"
 compress :: Eq a => [a] -> [a]
-compress = (map head) . group
+compress = (map head) . pack
 
 
+-- | Problem 9
+--
+-- Pack consecutive duplicates of list elements into sublists. If a list contains repeated 
+-- elements they should be placed in separate sublists.
+-- >>> pack ['a', 'a', 'a', 'a', 'b', 'c', 'c', 'a', 'a', 'd', 'e', 'e', 'e', 'e']
+-- ["aaaa","b","cc","aa","d","eeee"]
+pack :: Eq a => [a] -> [[a]]
+pack [] = []
+pack xs = (takeWhile eq xs):(pack $ dropWhile eq xs)
+    where eq x = x == head xs
