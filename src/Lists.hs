@@ -2,6 +2,7 @@ module Lists where
 
 
 -- | Problem 1
+--
 -- Find the last element of a list
 -- 
 -- >>> myLast [1,2,3,4]
@@ -13,6 +14,7 @@ myLast = head . reverse
 
 
 -- | Problem 2
+--
 -- Find the last but one element of a list. 
 --
 -- >>> myButLast [1,2,3,4]
@@ -24,6 +26,7 @@ myButLast = head . tail . reverse
 
 
 -- | Problem 3
+--
 -- Find the K'th element of a list. The first element in the list is number 1. 
 --
 -- >>> elementAt [1,2,3] 2
@@ -36,6 +39,7 @@ elementAt xs n = elementAt (tail xs) (n - 1)
 
 
 -- | Problem 4
+--
 -- Find the number of elements of a list. 
 --
 -- >>> myLength [123, 456, 789]
@@ -47,6 +51,7 @@ myLength = foldl (\n _ -> n + 1) 0
 
 
 -- | Problem 5
+--
 -- Reverse a list.
 --
 -- >>> myReverse "A man, a plan, a canal, panama!"
@@ -58,6 +63,7 @@ myReverse = foldl (flip (:)) []
 
 
 -- | Problem 6
+--
 -- Find out whether a list is a palindrome. 
 -- A palindrome can be read forward or backward; e.g. (x a m a x).
 --
@@ -72,6 +78,7 @@ isPalindrome xs = reverse xs == xs
 
 
 -- | Problem 7
+--
 -- Flatten a nested list structure: Transform a list, possibly holding lists as elements into 
 -- a `flat' list by replacing each list with its elements (recursively). 
 --
@@ -90,6 +97,7 @@ data NestedList a = Elem a | List [NestedList a]
 
 
 -- | Problem 8
+--
 -- Eliminate consecutive duplicates of list elements.
 -- 
 -- If a list contains repeated elements they should be replaced with a single copy of the element. 
@@ -202,3 +210,14 @@ dupli (a:rest) = a:a:(dupli rest)
 -- "aaabbbccc"
 repli :: [a] -> Int -> [a]
 repli xs n = concatMap (replicate n) xs
+
+
+-- | Problem 16
+--
+-- Drop every N'th element from a list.
+--
+-- >>> dropEvery "abcdefghik" 3
+-- "abdeghk"
+dropEvery :: [a] -> Int -> [a]
+dropEvery [] _ = []
+dropEvery xs n = (take (n-1) xs) ++ (dropEvery (drop n xs) n)
