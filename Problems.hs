@@ -1,4 +1,4 @@
-module Lists where
+module Problems where
 
 
 -- | Problem 1
