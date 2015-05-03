@@ -110,3 +110,36 @@ pack :: Eq a => [a] -> [[a]]
 pack [] = []
 pack xs = (takeWhile eq xs):(pack $ dropWhile eq xs)
     where eq x = x == head xs
+
+
+-- | Problem 10
+--
+-- Run-length encoding of a list. Use the result of problem P09 to implement the so-called 
+-- run-length encoding data compression method. Consecutive duplicates of elements are encoded 
+-- as lists (N E) where N is the number of duplicates of the element E.
+--
+-- >>> encode "aaaabccaadeeee"
+-- [(4,'a'),(1,'b'),(2,'c'),(2,'a'),(1,'d'),(4,'e')]
+encode :: Eq a => [a] -> [(Int, a)]
+encode = map (\xs -> (myLength xs, head xs)) . pack
+
+
+-- | Problem 11
+--
+-- Modified run-length encoding.
+--
+-- Modify the result of problem 10 in such a way that if an element has no duplicates it is simply 
+-- copied into the result list. Only elements with duplicates are transferred as (N E) lists.
+--
+-- >>> encodeModified "fffffffuuuuuuuuuuuuu"
+-- [Multiple 7 'f',Multiple 13 'u']
+-- >>> encodeModified "aaaabccaadeeee"
+-- [Multiple 4 'a',Single 'b',Multiple 2 'c',Multiple 2 'a',Single 'd',Multiple 4 'e']
+encodeModified :: Eq a => [a] -> [Encoded a]
+encodeModified = map foo . encode
+    where foo (1, a) = Single a
+          foo (n, a) = Multiple n a
+
+data Encoded a = Single a | Multiple Int a 
+    deriving (Show)
+
