@@ -181,3 +181,24 @@ count = foldr helper []
         helper x ((n,x'):rest)
             | x == x'   = ((n+1),x'):rest
             | otherwise = (1,x):(n,x'):rest
+
+
+-- | Problem 14
+-- 
+-- Duplicate the elements of a list.
+--
+-- >>> dupli [1, 2, 3]
+-- [1,1,2,2,3,3]
+dupli :: [a] -> [a]
+dupli [] = []
+dupli (a:rest) = a:a:(dupli rest)
+
+
+-- | Problem 15
+--
+-- Replicate the elements of a list a given number of times.
+--
+-- >>> repli "abc" 3
+-- "aaabbbccc"
+repli :: [a] -> Int -> [a]
+repli xs n = concatMap (replicate n) xs
