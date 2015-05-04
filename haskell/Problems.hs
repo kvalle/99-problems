@@ -235,3 +235,36 @@ split :: [a] -> Int -> ([a], [a])
 split xs     0 = ([], xs)
 split (x:xs) n = let (h,t) = split xs (n-1)
                   in (x:h, t)
+
+
+-- | Problem 18
+--
+-- Extract a slice from a list.
+--
+-- Given two indices, i and k, the slice is the list containing the elements 
+-- between the i'th and k'th element of the original list (both limits included). 
+-- Start counting the elements with 1.
+-- 
+-- >>> slice ['a','b','c','d','e','f','g','h','i','k'] 3 7
+-- "cdefg"
+slice :: [a] -> Int -> Int -> [a]
+slice xs a b = drop (a-1) $ take b xs
+
+
+-- | Problem 19
+--
+-- Rotate a list N places to the left.
+--
+-- Hint: Use the predefined functions length and (++).
+-- 
+-- >>> rotate ['a','b','c','d','e','f','g','h'] 3
+--"defghabc"
+--
+-- >>> rotate ['a','b','c','d','e','f','g','h'] (-2)
+-- "ghabcdef"
+rotate :: [a] -> Int -> [a]
+rotate xs n | n >= 0    = (drop n xs) ++ (take n xs)
+            | otherwise = let n' = (length xs) + n
+                           in rotate xs n'
+
+
