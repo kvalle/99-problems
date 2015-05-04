@@ -1,5 +1,7 @@
 module Problems where
 
+import System.Random (mkStdGen, randomRs, RandomGen)
+import Debug.Trace
 
 -- | Problem 1
 --
@@ -266,5 +268,63 @@ rotate :: [a] -> Int -> [a]
 rotate xs n | n >= 0    = (drop n xs) ++ (take n xs)
             | otherwise = let n' = (length xs) + n
                            in rotate xs n'
+
+
+-- | Problem 20
+-- 
+-- Remove the K'th element from a list.
+--
+-- >>> removeAt 2 "abcd"
+-- ('b',"acd")
+removeAt :: Int -> [a] -> (a, [a])
+removeAt n xs = let (as, b:bs) = splitAt (n-1) xs
+                 in (b, as++bs)
+
+
+-- | Problem 21
+--
+-- Insert an element at a given position into a list.
+--
+-- >>> insertAt 'X' "abcd" 2
+-- "aXbcd"
+insertAt :: a -> [a] -> Int -> [a]
+insertAt x xs n = (take (n-1) xs) ++ x:(drop (n-1) xs)
+
+
+-- | Problem 22
+--
+-- Create a list containing all integers within a given range.
+-- 
+-- >>> range 4 9
+-- [4,5,6,7,8,9]
+range :: Int -> Int -> [Int]
+range a b = [a..b]
+
+
+-- | Problem 23
+--
+-- Extract a given number of randomly selected elements from a list.
+--
+-- Note: Changed the task slightly to accept RandomGen as argument.
+--
+-- >>> import System.Random
+-- >>> rndSelect (mkStdGen 1) "abcdefgh" 3
+-- "bad"
+rndSelect :: RandomGen g => g -> [a] -> Int -> [a]
+rndSelect gen xs n = take n [ xs !! x | x <- indices]
+    where indices = randomRs (0, (length xs) - 1) gen
+
+
+-- | Problem 24
+--
+-- Lotto: Draw N different random numbers from the set 1..M.
+-- 
+-- >>> import System.Random
+-- >>>lotto (mkStdGen 1) 6 49
+-- [45,48,35,18,29,11]
+lotto :: RandomGen g => g -> Int -> Int -> [Int]
+lotto gen n m = take n $ unique $ randomRs (1, m) gen
+    where unique []     = []
+          unique (x:xs) = x : unique (filter (x /=) xs)
 
 
