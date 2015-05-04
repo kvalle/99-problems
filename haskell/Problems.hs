@@ -221,3 +221,17 @@ repli xs n = concatMap (replicate n) xs
 dropEvery :: [a] -> Int -> [a]
 dropEvery [] _ = []
 dropEvery xs n = (take (n-1) xs) ++ (dropEvery (drop n xs) n)
+
+
+-- | Problem 17
+--
+-- Split a list into two parts; the length of the first part is given.
+--
+-- Do not use any predefined predicates.
+--
+-- >>> split "abcdefghik" 3
+-- ("abc","defghik")
+split :: [a] -> Int -> ([a], [a])
+split xs     0 = ([], xs)
+split (x:xs) n = let (h,t) = split xs (n-1)
+                  in (x:h, t)
