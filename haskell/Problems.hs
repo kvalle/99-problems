@@ -328,3 +328,36 @@ lotto gen n m = take n $ unique $ randomRs (1, m) gen
           unique (x:xs) = x : unique (filter (x /=) xs)
 
 
+-- | Problem 25
+-- 
+-- Generate a random permutation of the elements of a list.
+-- 
+-- >>> import System.Random
+-- >>> rndPerm (mkStdGen 1) "abcdef"
+-- "febcda"
+rndPerm :: RandomGen g => g -> [a] -> [a]
+rndPerm gen source = [ source !! (x-1) | x <- indices]
+    where indices = lotto gen n n
+          n = length source
+
+
+-- | Problem 26
+--
+-- Generate the combinations of K distinct objects chosen from the N elements 
+-- of a list.
+--
+-- In how many ways can a committee of 3 be chosen from a group of 12 people? 
+-- We all know that there are C(12,3) = 220 possibilities (C(N,K) denotes the 
+-- well-known binomial coefficients). For pure mathematicians, this result may 
+-- be great. But we want to really generate all the possibilities in a list.
+--
+-- >>> combinations 2 "abcdef"
+-- ["ab","ac","ad","ae","af","bc","bd","be","bf","cd","ce","cf","de","df","ef"]
+-- >>> length $ combinations 4 [1..50]
+-- 230300
+combinations :: Int -> [a] -> [[a]]
+combinations 0 _  = [[]]
+combinations n xs = [ (xs !! i):xs' | i <- [0..(length xs)-1],
+                                      xs' <- combinations (n-1) (drop (i+1) xs)]
+
+
